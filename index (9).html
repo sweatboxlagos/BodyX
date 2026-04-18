@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BODYX - Africa's Premier Fitness Championship</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function BodyXWebsite() {
+            const [activeTab, setActiveTab] = useState('spectator');
+            const [cartItems, setCartItems] = useState({});
+            const [availableTickets, setAvailableTickets] = useState({});
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [expandedStation, setExpandedStation] = useState(null);
+
+            useEffect(() => {
+                window.addEventListener('scroll', () => setIsScrolled(window.scrollY > 50));
+                const today = new Date();
+                const aprilEnd = new Date(2026, 3, 30);
+                const may1 = new Date(2026, 4, 1);
+                const juneEleven = new Date(2026, 5, 11);
+                const junetwelve = new Date(2026, 5, 12);
+
+                const available = {};
+                if (today <= aprilEnd) available['early-bird'] = true;
+                if (today >= may1 && today <= juneEleven) available['regular'] = true;
+                if (today >= junetwelve) available['door'] = true;
+                available['team'] = true;
+                available['vendor'] = true;
+
+                setAvailableTickets(available);
+            }, []);
+
+            const galleryImages = [
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513077/DSC07000_3_qocw1l.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513070/DSC06938_3_pd92n5.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513080/DSC068030_3_bguuks.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513054/DSC06853_3_a3iw3w.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513024/DSC06630_3_uas18r.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776513025/DSC06780_3_sbduor.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512983/DSC06477_3_vskqwz.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512867/DSC05924_3_woclkh.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512865/DSC05897_3_vhgakx.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512896/DSC06028_3_x50fac.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512878/DSC05999_3_j2sku0.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512831/DSC05751_3_digd8h.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512823/DSC05437_3_k9fycf.jpg',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512757/0276BAAC-53B7-4EBA-BE42-1939D4CE055B_nifzmm.png',
+                'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_800,h_600,c_fill,q_auto,f_auto/v1776512816/DSC05516_3_t5ggus.jpg',
+            ];
+
+            const stations = [
+                {
+                    num: 1,
+                    name: 'Team Relay Run',
+                    icon: '🏃‍♂️',
+                    overview: '9km collective endurance challenge',
+                    details: 'Three athletes take turns running 3km each in relay formation. This is your opening statement—pace and handoff timing are critical. Expect elevated heart rates and the mental battle of transitioning between teammates.',
+                    breakdown: [
+                        'Total Distance: 9km (3km per athlete)',
+                        'Format: Sequential relay',
+                        'Challenge: Pacing, transitions, team morale',
+                        'Mindset: Strong start sets the tone'
+                    ],
+                    trainTip: 'Practice change-overs. Smooth transitions save seconds. Build cardiovascular base with tempo runs.'
+                },
+                {
+                    num: 2,
+                    name: 'Pull & Push Zone',
+                    icon: '💪',
+                    overview: 'Upper body strength and endurance merged',
+                    details: 'Assault the rings, floor, and barbell in rapid succession. 60 pull-ups test your grip and back. 150 push-ups expose weaknesses in chest and triceps. 60 deadlifts at 100kg demand explosive power and controlled breathing.',
+                    breakdown: [
+                        '60 Ring Pull-ups (full range of motion)',
+                        '150 Push-ups (chest to deck, unbroken or breaks)',
+                        '60 Deadlifts @ 100kg (explosive lockout)',
+                        'Total Reps: 270 movements'
+                    ],
+                    trainTip: 'Develop pull-up strength with weighted vests. Push-ups require volume—daily sets. Deadlifts: focus on form before adding load.'
+                },
+                {
+                    num: 3,
+                    name: 'Lower Body Burn',
+                    icon: '🦵',
+                    overview: 'Legs, quads, and mental fortitude destruction',
+                    details: 'Your legs will beg for mercy. 300 air squats demand cardiovascular and muscular endurance. 50kg weighted lunges over 100 meters test balance and leg strength under fatigue. 150 step-overs maintain the burn.',
+                    breakdown: [
+                        '300 Air Squats (full depth required)',
+                        '100m Lunges with 50kg load (50 total)',
+                        '150 Bodyweight Step-overs (alternating legs)',
+                        'Cumulative Leg Reps: 500+'
+                    ],
+                    trainTip: 'Squats build volume tolerance—practice daily. Weighted lunges: master bodyweight first. Mental game matters here—this is where champions are tested.'
+                },
+                {
+                    num: 4,
+                    name: 'Core Zone',
+                    icon: '🔥',
+                    overview: 'Abdominal and isometric strength showcase',
+                    details: '150 v-ups shred your core with explosive flexion. 150 knee raises demand hanging strength and abs engagement. Three minutes of plank hold tests mental resilience when your body is already exhausted.',
+                    breakdown: [
+                        '150 V-ups (sit-up meets leg raise)',
+                        '150 Knee Raises (hanging, controlled descent)',
+                        '3 Minute Plank Hold (unbroken, perfect form)',
+                        'Total Time: 3+ minutes of isometric stress'
+                    ],
+                    trainTip: 'Ab work daily. V-ups: master hollow body position. Knee raises: build grip strength on pull-up bar. Planks: train progressively to 5+ minutes.'
+                },
+                {
+                    num: 5,
+                    name: 'Carry Zone',
+                    icon: '⚡',
+                    overview: 'Raw loaded strength and grip power',
+                    details: 'Carry heavy objects 100 meters, three different ways. 30kg farmers carry tests grip endurance. 25kg overhead carry demands shoulder stability and core engagement. 40kg Zercher carry (across the arms) is punishing. Three carries, three distances—total 300m of loaded walking.',
+                    breakdown: [
+                        '30kg Farmers Carry over 100m (each hand)',
+                        '25kg Overhead Plate Carry over 100m (must clear head)',
+                        '40kg Zercher Carry over 100m (across arms)',
+                        'Total Load: 95kg moved 300 meters'
+                    ],
+                    trainTip: 'Grip strength training (dead hangs, farmer carries). Shoulder mobility for overhead carry. Core bracing for Zercher—this position is awkward, practice it.'
+                },
+                {
+                    num: 6,
+                    name: 'Synchronized Challenge',
+                    icon: '🤝',
+                    overview: 'Team synchronization and collective power',
+                    details: 'Your team must move as one unit. 15 synchronized burpees force timing and pace management. 60 synchronized squats require unison—slow one person and you fail. One minute of synchronized sitting (elbow-to-knee) tests team core strength.',
+                    breakdown: [
+                        '15 Synchronized Burpees (all three together)',
+                        '60 Synchronized Squats (perfectly timed)',
+                        '1 Minute Team Sit (elbows to knees, holding)',
+                        'Focus: Team cohesion, not individual speed'
+                    ],
+                    trainTip: 'Practice together constantly. Call cadence. Establish communication signals. The fastest team often loses here—control and sync win.'
+                },
+                {
+                    num: 7,
+                    name: 'Final Push',
+                    icon: '🎯',
+                    overview: 'Sled power and rope climbing endurance finale',
+                    details: 'Your final station. Energy is depleted. Mental toughness is everything. 400m sled push demands absolute power in a fatigued state. Six rope climbs at 15m each test upper body and grip when you\'re already spent. This is where legends are made.',
+                    breakdown: [
+                        '400m Sled Push (loaded, explosive)',
+                        '6 Rope Climbs @ 15m each (90m total)',
+                        'Cumulative: 490m of high-intensity work',
+                        'Mental Challenge: This is the championship moment'
+                    ],
+                    trainTip: 'Build sled pushing power—explosive leg drive. Rope climbs: master the technique on fresh legs first. The final station is won mentally—prepare your mind to push when the body screams stop.'
+                }
+            ];
+
+            const ticketPricing = {
+                spectator: [
+                    { id: 'early-bird', name: 'Early Bird', price: 7000, period: 'Until April 30' },
+                    { id: 'regular', name: 'Regular', price: 10000, period: 'May 1 - June 11' },
+                    { id: 'door', name: 'Door', price: 15000, period: 'June 12 Only' },
+                ],
+                team: [{ id: 'team', name: 'Team (3 athletes - coed)', price: 150000, period: 'Per team' }],
+                vendor: [{ id: 'vendor', name: 'Vendor Booth', price: 100000, period: 'Full Event' }],
+            };
+
+            const addToCart = (tierId) => setCartItems(prev => ({ ...prev, [tierId]: (prev[tierId] || 0) + 1 }));
+            const removeFromCart = (tierId) => {
+                setCartItems(prev => {
+                    const updated = { ...prev };
+                    if (updated[tierId] > 1) updated[tierId]--;
+                    else delete updated[tierId];
+                    return updated;
+                });
+            };
+
+            const getTotalPrice = () => {
+                let total = 0;
+                const pricingList = ticketPricing[activeTab] || [];
+                Object.entries(cartItems).forEach(([tierId, quantity]) => {
+                    const tier = pricingList.find(t => t.id === tierId);
+                    if (tier) total += tier.price * quantity;
+                });
+                return total;
+            };
+
+            const getTotalQuantity = () => Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
+
+            const handleCheckout = () => {
+                if (getTotalQuantity() === 0) return;
+                const totalPrice = getTotalPrice();
+                
+                if (activeTab === 'spectator') {
+                    window.location.href = `https://paystack.shop/pay/bodyxsb6thyear?amount=${totalPrice}`;
+                } else if (activeTab === 'team') {
+                    window.location.href = `https://paystack.shop/pay/bodyx?amount=${totalPrice}`;
+                } else if (activeTab === 'vendor') {
+                    window.location.href = `https://paystack.shop/pay/BODYXVendor?amount=${totalPrice}`;
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-black text-white overflow-hidden">
+                    {/* Navigation */}
+                    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/95 backdrop-blur-md border-b border-lime-500/20 shadow-2xl' : 'bg-transparent'}`}>
+                        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+                            <div className="text-3xl font-black tracking-tighter">
+                                <span className="bg-gradient-to-r from-lime-300 via-lime-400 to-lime-500 bg-clip-text text-transparent">BODYX</span>
+                                <div className="text-xs text-lime-400 font-bold tracking-widest -mt-2">AFRICA CHAMPIONSHIP</div>
+                            </div>
+                            <div className="hidden lg:flex gap-12 text-sm font-medium">
+                                <a href="#mission" className="hover:text-lime-400 transition duration-300">MISSION</a>
+                                <a href="#stations" className="hover:text-lime-400 transition duration-300">THE SEVEN</a>
+                                <a href="#legacy" className="hover:text-lime-400 transition duration-300">LEGACY</a>
+                                <a href="#gallery" className="hover:text-lime-400 transition duration-300">GALLERY</a>
+                                <a href="#tickets" className="hover:text-lime-400 transition duration-300">TICKETS</a>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Hero */}
+                    <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+                        <div className="absolute inset-0 opacity-30">
+                            <div className="absolute -top-40 -left-40 w-96 h-96 bg-lime-500 rounded-full blur-3xl"></div>
+                            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-lime-600 rounded-full blur-3xl"></div>
+                        </div>
+
+                        <div className="relative z-10 max-w-6xl mx-auto text-center">
+                            <div className="mb-8 inline-block px-6 py-2 bg-lime-500/10 border border-lime-500/50 rounded-full">
+                                <span className="text-lime-400 text-sm font-bold tracking-widest uppercase">The Future of African Fitness</span>
+                            </div>
+
+                            <h1 className="text-8xl md:text-9xl font-black mb-6 tracking-tighter leading-none">
+                                <span className="bg-gradient-to-b from-lime-200 via-lime-400 to-lime-500 bg-clip-text text-transparent">BODYX</span>
+                            </h1>
+
+                            <p className="text-3xl md:text-4xl font-bold text-lime-400 mb-6 tracking-wide">WHERE POWER MEETS PERFORMANCE</p>
+
+                            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
+                                Africa's premier fitness championship uniting elite athletes across the continent. Seven stations. One champion. Infinite glory.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                                <a href="#tickets" className="group px-10 py-4 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-black text-lg rounded-xl hover:shadow-2xl hover:shadow-lime-500/50 transition-all duration-300 transform hover:scale-105">
+                                    SECURE YOUR SPOT
+                                    <span className="inline-block ml-2 group-hover:translate-x-2 transition-transform">→</span>
+                                </a>
+                                <a href="#stations" className="px-10 py-4 border-2 border-lime-400 text-lime-400 font-bold rounded-xl hover:bg-lime-400/10 transition-all duration-300">
+                                    EXPLORE THE CHALLENGE
+                                </a>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+                                <div>
+                                    <div className="text-4xl font-black text-lime-400">7</div>
+                                    <div className="text-sm text-gray-400 mt-2">BRUTAL STATIONS</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-black text-lime-400">3</div>
+                                    <div className="text-sm text-gray-400 mt-2">COED TEAMS</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-black text-lime-400">₦2.5M</div>
+                                    <div className="text-sm text-gray-400 mt-2">PRIZE POOL</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Mission */}
+                    <section id="mission" className="py-32 px-6 bg-gradient-to-b from-black via-black to-lime-950/10">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="grid md:grid-cols-2 gap-16 items-center">
+                                <div>
+                                    <h2 className="text-6xl font-black mb-8 leading-tight">
+                                        <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">Africa Rises</span>
+                                    </h2>
+                                    <p className="text-xl text-gray-300 mb-6 leading-relaxed">BodyX is a movement. We're redefining what fitness means across Africa—uniting nations, inspiring generations, and proving that African athletes are world-class competitors.</p>
+                                    <p className="text-xl text-gray-300 leading-relaxed">From Lagos to Johannesburg, from Accra to Cape Town, we're building the most authentic, intense, and celebrated fitness championship Africa has ever seen. This is our moment. This is our time.</p>
+                                </div>
+                                <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl shadow-lime-500/30">
+                                    <img src={galleryImages[0]} alt="BodyX Competition" className="w-full h-full object-cover" loading="lazy" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Detailed Stations */}
+                    <section id="stations" className="py-32 px-6 bg-black">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="text-center mb-20">
+                                <h2 className="text-6xl font-black mb-6">
+                                    <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">The Seven Trials</span>
+                                </h2>
+                                <p className="text-xl text-gray-400">Master every station. Prepare relentlessly. This is your roadmap to victory.</p>
+                            </div>
+
+                            <div className="space-y-8">
+                                {stations.map((station, i) => (
+                                    <div key={i} className="group">
+                                        <button onClick={() => setExpandedStation(expandedStation === i ? null : i)} className="w-full bg-gradient-to-r from-lime-500/10 to-transparent border border-lime-500/30 rounded-2xl p-8 hover:border-lime-400 hover:bg-lime-500/15 transition-all duration-300 text-left">
+                                            <div className="flex items-start justify-between">
+                                                <div className="flex items-start gap-6">
+                                                    <div className="text-6xl">{station.icon}</div>
+                                                    <div>
+                                                        <h3 className="text-3xl font-black mb-2">{station.num}. {station.name}</h3>
+                                                        <p className="text-xl text-lime-400 font-semibold mb-2">{station.overview}</p>
+                                                        <p className="text-gray-400 text-sm hidden md:block max-w-2xl">{station.details.substring(0, 120)}...</p>
+                                                    </div>
+                                                </div>
+                                                <div className={`text-3xl transition-transform duration-300 ${expandedStation === i ? 'rotate-180' : ''}`}>↓</div>
+                                            </div>
+                                        </button>
+
+                                        {expandedStation === i && (
+                                            <div className="bg-gradient-to-br from-white/5 to-white/3 border border-lime-500/20 rounded-2xl p-8 mt-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                                                <div className="grid md:grid-cols-2 gap-12">
+                                                    <div>
+                                                        <h4 className="text-2xl font-bold text-lime-400 mb-6">Complete Breakdown</h4>
+                                                        <div className="space-y-4">
+                                                            {station.breakdown.map((item, idx) => (
+                                                                <div key={idx} className="flex gap-4">
+                                                                    <div className="text-lime-400 font-bold">→</div>
+                                                                    <p className="text-gray-300">{item}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-2xl font-bold text-lime-400 mb-6">Full Details</h4>
+                                                        <p className="text-gray-300 leading-relaxed mb-6">{station.details}</p>
+                                                        <div className="bg-lime-500/10 border border-lime-500/30 rounded-xl p-6">
+                                                            <h5 className="font-bold text-lime-400 mb-3">🎯 Training Tips</h5>
+                                                            <p className="text-gray-300 text-sm">{station.trainTip}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mt-16 bg-gradient-to-r from-lime-500/10 to-transparent border border-lime-500/30 rounded-2xl p-8 text-center">
+                                <h3 className="text-3xl font-black mb-4">Total Competition Time: 45-90 Minutes</h3>
+                                <p className="text-gray-400 text-lg">Depending on your team's pace, experience, and mental resilience. Every second counts.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Legacy */}
+                    <section id="legacy" className="py-32 px-6 bg-gradient-to-b from-lime-950/10 to-black">
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className="text-6xl font-black mb-16 text-center">
+                                <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">Previous Champions</span>
+                            </h2>
+
+                            <div className="space-y-6">
+                                {[
+                                    { pos: 1, medal: '🥇', team: 'Undisputed', time: '37:00', desc: 'Setting the African standard', image: 'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_150,h_150,c_fill,q_auto,f_auto/v1776513070/DSC06938_3_pd92n5.jpg' },
+                                    { pos: 2, medal: '🥈', team: 'Power Surge', time: '41:00', desc: 'Fast, relentless pursuit', image: 'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_150,h_150,c_fill,q_auto,f_auto/v1776513070/DSC06930_3_ynohde.jpg' },
+                                    { pos: 3, medal: '🥉', team: 'I am Fit Magodo', time: '45:00', desc: 'Rising force in African fitness', image: 'https://res.cloudinary.com/dw3kvzu9i/image/upload/w_150,h_150,c_fill,q_auto,f_auto/v1776513054/DSC06853_3_a3iw3w.jpg' },
+                                ].map((champ, i) => (
+                                    <div key={i} className="bg-gradient-to-r from-lime-500/10 to-transparent border border-lime-500/30 rounded-xl p-8 flex items-center justify-between group hover:border-lime-400 transition-all">
+                                        <div className="flex items-center gap-6">
+                                            <div className="text-5xl">{champ.medal}</div>
+                                            {champ.image && (
+                                                <img src={champ.image} alt={champ.team} className="w-20 h-20 rounded-full object-cover border-2 border-lime-500/50 group-hover:border-lime-400 transition-all" />
+                                            )}
+                                            <div>
+                                                <h3 className="text-2xl font-black">{champ.team}</h3>
+                                                <p className="text-gray-400 text-sm">{champ.desc}</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-4xl font-black text-lime-400">{champ.time}</div>
+                                            <div className="text-xs text-gray-400 mt-1">FINISHING TIME</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Gallery */}
+                    <section id="gallery" className="py-32 px-6 bg-black">
+                        <div className="max-w-7xl mx-auto">
+                            <h2 className="text-6xl font-black mb-16 text-center">
+                                <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">The Raw Reality</span>
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[300px]">
+                                {galleryImages.map((img, i) => (
+                                    <div key={i} className="relative overflow-hidden rounded-2xl shadow-2xl hover:shadow-2xl hover:shadow-lime-500/50 group cursor-pointer" style={{ gridRow: i % 5 === 0 ? 'span 2' : 'span 1', gridColumn: i % 7 === 0 ? 'span 2' : 'span 1' }}>
+                                        <img src={img} alt="BodyX" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/40 transition-all"></div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Prize Pool */}
+                    <section className="py-32 px-6 bg-gradient-to-b from-black to-lime-950/10">
+                        <div className="max-w-5xl mx-auto">
+                            <h2 className="text-6xl font-black mb-16 text-center">
+                                <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">Prize Pool</span>
+                            </h2>
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {[
+                                    { place: '1ST', amount: '₦1.5M', emoji: '🥇', highlight: true },
+                                    { place: '2ND', amount: '₦750K', emoji: '🥈' },
+                                    { place: '3RD', amount: '₦325K', emoji: '🥉' },
+                                ].map((prize, i) => (
+                                    <div key={i} className={`relative rounded-2xl p-8 text-center group transition-all ${prize.highlight ? 'bg-gradient-to-b from-lime-500/20 to-lime-500/5 border-2 border-lime-500 shadow-2xl shadow-lime-500/30 transform scale-105' : 'bg-gradient-to-br from-white/10 to-white/5 border border-lime-500/30 hover:border-lime-400'}`}>
+                                        <div className="text-6xl mb-4">{prize.emoji}</div>
+                                        <p className="text-sm text-gray-400 mb-3 uppercase tracking-widest font-bold">{prize.place} PLACE</p>
+                                        <p className="text-5xl font-black text-lime-400">{prize.amount}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-center text-xl text-gray-400 mt-12">Total Prize Pool: <span className="text-lime-400 font-black">₦2,575,000</span></p>
+                        </div>
+                    </section>
+
+                    {/* Tickets */}
+                    <section id="tickets" className="py-32 px-6 bg-black">
+                        <div className="max-w-5xl mx-auto">
+                            <h2 className="text-6xl font-black mb-8 text-center">
+                                <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">Join The Movement</span>
+                            </h2>
+                            <p className="text-center text-xl text-gray-400 mb-16">Choose your role in Africa's fitness revolution</p>
+
+                            <div className="flex gap-4 justify-center mb-16 flex-wrap">
+                                {[
+                                    { key: 'spectator', label: 'WITNESS', desc: 'Watch greatness' },
+                                    { key: 'team', label: 'COMPETE', desc: 'Prove yourself' },
+                                    { key: 'vendor', label: 'PARTNER', desc: 'Build with us' },
+                                ].map(tab => (
+                                    <button key={tab.key} onClick={() => { setActiveTab(tab.key); setCartItems({}); }} className={`group px-8 py-4 rounded-xl font-black text-lg transition-all duration-300 ${activeTab === tab.key ? 'bg-lime-500 text-black shadow-2xl shadow-lime-500/50 scale-105' : 'bg-white/10 border border-lime-500/30 text-lime-400 hover:border-lime-400'}`}>
+                                        <div>{tab.label}</div>
+                                        <div className="text-xs opacity-75">{tab.desc}</div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8 mb-12">
+                                {ticketPricing[activeTab].map((tier, i) => {
+                                    const isAvailable = availableTickets[tier.id];
+                                    return isAvailable ? (
+                                        <div key={i} className="group relative bg-gradient-to-br from-white/10 to-white/5 border border-lime-500/30 rounded-2xl p-8 hover:border-lime-400 hover:shadow-2xl hover:shadow-lime-500/30 transition-all duration-300 transform hover:-translate-y-4">
+                                            <h3 className="text-2xl font-black mb-3">{tier.name}</h3>
+                                            <p className="text-lime-400 font-bold mb-6 text-sm uppercase tracking-widest">{tier.period}</p>
+                                            <p className="text-5xl font-black text-lime-400 mb-8">₦{tier.price.toLocaleString()}</p>
+                                            <div className="flex items-center justify-between mb-6 bg-white/5 rounded-lg p-4">
+                                                <button onClick={() => removeFromCart(tier.id)} className="text-lime-400 hover:text-lime-300 text-2xl font-bold">−</button>
+                                                <span className="font-black text-xl">{cartItems[tier.id] || 0}</span>
+                                                <button onClick={() => addToCart(tier.id)} className="text-lime-400 hover:text-lime-300 text-2xl font-bold">+</button>
+                                            </div>
+                                        </div>
+                                    ) : null;
+                                })}
+                            </div>
+
+                            {getTotalQuantity() > 0 && (
+                                <div className="bg-gradient-to-r from-lime-500/20 to-lime-400/10 border-2 border-lime-500 rounded-2xl p-8 mb-8">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <p className="text-2xl font-black">{getTotalQuantity()} ticket{getTotalQuantity() > 1 ? 's' : ''} selected</p>
+                                        <p className="text-5xl font-black text-lime-400">₦{getTotalPrice().toLocaleString()}</p>
+                                    </div>
+                                    <button onClick={handleCheckout} className="w-full py-4 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-black text-lg rounded-xl hover:shadow-2xl hover:shadow-lime-500/50 transition-all transform hover:scale-105">
+                                        → COMPLETE CHECKOUT
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* Sponsor CTA */}
+                    <section className="py-32 px-6 bg-gradient-to-r from-lime-500/10 via-black to-lime-500/10">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="text-5xl md:text-6xl font-black mb-8">
+                                <span className="bg-gradient-to-r from-lime-300 via-lime-400 to-lime-500 bg-clip-text text-transparent">Partner With Africa's Future</span>
+                            </h2>
+                            <p className="text-xl text-gray-300 mb-12">BodyX isn't just an event—it's a platform for brands to shape the future of African fitness. Join us in building something legendary.</p>
+                            <a href="mailto:sponsorship@bodyx.com" className="inline-block px-12 py-4 bg-gradient-to-r from-lime-400 to-lime-500 text-black font-black text-lg rounded-xl hover:shadow-2xl hover:shadow-lime-500/50 transition-all transform hover:scale-105">
+                                EXPLORE SPONSORSHIP OPPORTUNITIES →
+                            </a>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="py-12 px-6 border-t border-white/10">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="text-center">
+                                <h3 className="text-3xl font-black mb-4">
+                                    <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">BODYX</span>
+                                </h3>
+                                <p className="text-gray-400 mb-8">Africa's Premier Fitness Championship</p>
+                                <p className="text-sm text-gray-500">June 12, 2026 • Sweatbox Lagos • Africa Rising</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<BodyXWebsite />);
+    </script>
+</body>
+</html>
